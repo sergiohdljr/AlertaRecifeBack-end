@@ -6,24 +6,25 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Ocorrencia {
   id                    String   @id @default(uuid())
-  tipoDaOcorrencia      String 
+  tipoDaOcorrencia      String
   descricaoDaOcorrencia String
-  fotoOcorrencia        Bytes?     
+  fotoOcorrencia        Bytes?
   enderecoOcorrencia    String
   dataHora              DateTime @default(now())
   autor                 Usuario  @relation(fields: [autorId], references: [id])
-  autorId               String   
+  autorId               String
 }
 
 model Usuario {
-  id          String       @id @default(uuid())  
+  id          String       @id @default(uuid())
   email       String       @unique
+  senha       String
   nome        String
   fotoPerfil  String
   Ocorrencias Ocorrencia[]

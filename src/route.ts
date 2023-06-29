@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { prisma } from "./prisma";
+import UserController from "./controllers/UserController";
+import AuthController from "./controllers/AuthController";
+import authMiddleware from "./middlewares/authMiddleware";
 
 export const router = Router();
 
-router.get("/", async (req, res) => {
+router.post("/users", UserController.store);
+router.post("/auth", AuthController.authenticate);
+
+router.get("/", authMiddleware, async (req, res) => {
   res.json("dale mammi");
 });
 
@@ -16,6 +22,7 @@ router.post("/ocorrencia", async (req, res) => {
     email,
     fotoPerfil,
     tipoDaOcorrencia,
+    senha,
   } = req.body;
 
   const resultado = await prisma.ocorrencia.create({
@@ -30,6 +37,7 @@ router.post("/ocorrencia", async (req, res) => {
             email,
           },
           create: {
+            senha,
             email,
             fotoPerfil,
             nome,
