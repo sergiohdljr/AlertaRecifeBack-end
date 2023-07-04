@@ -7,6 +7,7 @@ import authMiddleware from "./middlewares/authMiddleware";
 export const router = Router();
 
 router.post("/users", UserController.store);
+router.get("/user/:id",authMiddleware, UserController.findById);
 router.post("/auth", AuthController.authenticate);
 
 router.get("/", authMiddleware, async (req, res) => {
